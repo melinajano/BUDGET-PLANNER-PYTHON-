@@ -1,0 +1,562 @@
+from tkinter import *
+from tkinter import ttk
+from tkinter import messagebox
+from tkinter.ttk import Notebook
+from tkcalendar import DateEntry
+from tkinter.filedialog import *
+import os
+
+def delete2():
+    screen3.destroy()
+
+
+def delete3():
+    screen4.destroy()
+
+
+def delete4():
+    screen5.destroy()
+
+
+def login_sucess():
+    global screen3
+    screen3 = Toplevel(screen)
+    screen3.title("Success")
+    screen3.geometry("150x100")
+    Label(screen3, text="Login Sucess").pack()
+    Button(screen3, text="OK", command=delete2).pack()
+
+
+def password_not_recognised():
+    global screen4
+    screen4 = Toplevel(screen)
+    screen4.title("Success")
+    screen4.geometry("150x100")
+    Label(screen4, text="Password Error").pack()
+    Button(screen4, text="OK", command=delete3).pack()
+
+
+def user_not_found():
+    global screen5
+    screen5 = Toplevel(screen)
+    screen5.title("Success")
+    screen5.geometry("150x100")
+    Label(screen5, text="User Not Found").pack()
+    Button(screen5, text="OK", command=delete4).pack()
+
+
+def register_user():
+    print("working")
+
+    username_info = username.get()
+    password_info = password.get()
+
+    file = open(username_info, "w")
+    file.write(username_info + "\n")
+    file.write(password_info)
+    file.close()
+
+    username_entry.delete(0, END)
+    password_entry.delete(0, END)
+
+    Label(screen1, text="Registration Sucess", fg="green", font=("calibri", 11)).pack()
+
+
+def login_verify():
+    username1 = username_verify.get()
+    password1 = password_verify.get()
+    username_entry1.delete(0, END)
+    password_entry1.delete(0, END)
+
+    list_of_files = os.listdir()
+    if username1 in list_of_files:
+        file1 = open(username1, "r")
+        verify = file1.read().splitlines()
+        if password1 in verify:
+            login_sucess()
+        else:
+            password_not_recognised()
+
+    else:
+        user_not_found()
+
+
+def register():
+    global screen1
+    screen1 = Toplevel(screen)
+    screen1.title("Register")
+    screen1.geometry("300x250")
+
+    global username
+    global password
+    global username_entry
+    global password_entry
+    username = StringVar()
+    password = StringVar()
+
+    Label(screen1, text="Please enter details below").pack()
+    Label(screen1, text="").pack()
+    Label(screen1, text="Username * ").pack()
+
+    username_entry = Entry(screen1, textvariable=username)
+    username_entry.pack()
+    Label(screen1, text="Password * ").pack()
+    password_entry = Entry(screen1, textvariable=password)
+    password_entry.pack()
+    Label(screen1, text="").pack()
+    Button(screen1, text="Register", width=10, height=1, command=register_user).pack()
+
+def login():
+    global screen2
+    screen2 = Toplevel(screen)
+    screen2.title("Login")
+    screen2.geometry("300x250")
+    Label(screen2, text="Please enter details below to login").pack()
+    Label(screen2, text="").pack()
+
+    global username_verify
+    global password_verify
+
+    username_verify = StringVar()
+    password_verify = StringVar()
+
+    global username_entry1
+    global password_entry1
+
+    Label(screen2, text="Username * ").pack()
+    username_entry1 = Entry(screen2, textvariable=username_verify)
+    username_entry1.pack()
+    Label(screen2, text="").pack()
+    Label(screen2, text="Password * ").pack()
+    password_entry1 = Entry(screen2, textvariable=password_verify)
+    password_entry1.pack()
+    Label(screen2, text="").pack()
+    Button(screen2, text="Login", width=10, height=1, command=login_verify).pack()
+
+def main_screen():
+    global screen
+    screen = Tk()
+    screen.geometry("300x250")
+    screen.title("WeBudget")
+    Label(text="WeBudget Log In/Registration", bg="#223441", width="300", height="2", font=("Calibri", 13)).pack()
+    Label(text="").pack()
+    Button(text="Login", height="2", width="30", command=login).pack()
+    Label(text="").pack()
+    Button(text="Register", height="2", width="30", command=register).pack()
+
+
+
+    screen.mainloop()
+
+
+main_screen()
+
+
+class Frames(object):
+
+    def newWindow(self):  # new window definition
+        newwin = Toplevel(root)
+        newwin.title('Choose an activity')
+        newwin.geometry("500x500")
+        newwin.resizable(0, 0)
+
+        # Button 1
+        b1 = Button(newwin, text="Budget Planner",background="#223441", fg="white", command=self.budget)
+        b1.pack(side=TOP, expand=True, fill=BOTH)
+
+        # Button 2
+        b2 = Button(newwin, text="To Do List", background="#223441", fg="white", command= self.todolist)
+        b2.pack(side=TOP, expand=True, fill=BOTH)
+
+        # Button 3
+        b3 = Button(newwin, text="My Notes", background="#223441", fg="white", command= self.mynotes)
+        b3.pack(side=TOP, expand=True, fill=BOTH)
+
+
+    def mainFrame(self, root):
+        root.title('Choose an activity')
+        root.geometry("500x500")
+        root.config(bg='#223441')
+        root.resizable(0, 0)
+        button1 = Button(root, text="Choose an activity", command=self.newWindow)
+        button1.place(x=50, y=25, width=100, height=25)
+
+    def budget(self):
+        def Addexpenses():
+            a = EDate.get()
+            b = ETitle.get()
+            c = EExpense.get()
+            data = [a, b, c]
+            print(data)
+            TVExpense.insert('', 'end', values=data)
+
+        def Addincomes():
+            e = EDate2.get()
+            f = ETitle2.get()
+            g = EIncome.get()
+            data2 = [e, f, g]
+            print(data2)
+            TVIncomes.insert('', 'end', values=data2)
+
+        # window
+        wm = Tk()
+        wm.title('Budget Planner')
+        wm.geometry('800x500')
+        wm.config(bg='#223441')
+
+        # TAB EXPENSES/INCOMES
+        Tab = Notebook(wm)
+
+        F1 = Frame(Tab)
+        F1.config(bg='#223441')
+        F2 = Frame(Tab)
+        F2.config(bg='#223441')
+
+        Tab.add(F1, text='Expenses')
+        Tab.add(F2, text='Incomes')
+        Tab.pack(fill=BOTH, expand=1)
+
+        # TAB 1: EXPENSES
+        # -------------ROW 0-----------------------
+        LDate = ttk.Label(F1, text='Date', font=('None', 18))
+        LDate.grid(row=0, column=0, padx=5, pady=5, sticky='w')
+
+        EDate = DateEntry(F1, width=30, bg='#223441', foreground='white')
+        EDate.grid(row=0, column=1, padx=5, pady=5, sticky='w')
+
+        # -------------ROW1-----------------------
+        LTitle = ttk.Label(F1, text='Title', font=('None', 18))
+        LTitle.grid(row=1, column=0, padx=5, pady=5, sticky='w')
+
+        Title = StringVar()
+        ETitle = ttk.Entry(F1, textvariable=Title, font=('None', 18))
+        ETitle.grid(row=1, column=1, padx=5, pady=5, sticky='w')
+
+        # -------------ROW 2---------------------
+        LExpense = ttk.Label(F1, text='Expense', font=('None', 18))
+        LExpense.grid(row=2, column=0, padx=5, pady=5, sticky='w')
+
+        Expense = StringVar()
+        EExpense = ttk.Entry(F1, textvariable=Expense, font=('None', 18))
+        EExpense.grid(row=2, column=1, padx=5, pady=5, sticky='w')
+
+        # ----------------ROW 3------------------------------
+        BF1Add = ttk.Button(F1, text='ADD', command=Addexpenses)
+        BF1Add.grid(row=3, column=1, padx=5, pady=5, sticky='w', ipadx=10, ipady=10)
+
+        # ---------------TREEVIEW---------------------------
+        TVList = ['Date', 'Expenses', 'Amount']
+        TVExpense = ttk.Treeview(F1, columns=TVList, show='headings', height=5)
+        for i in TVList:
+            TVExpense.heading(i, text=i.title())
+        TVExpense.grid(row=4, column=1, padx=5, pady=5, sticky='w', columnspan=3)
+
+        # TAB 2: INCOMES
+        # -------------ROW 0-----------------------
+        LDate2 = ttk.Label(F2, text='Date', font=('None', 18))
+        LDate2.grid(row=0, column=0, padx=5, pady=5, sticky='w')
+
+        EDate2 = DateEntry(F2, width=30, bg='#223441', foreground='white')
+        EDate2.grid(row=0, column=1, padx=5, pady=5, sticky='w')
+
+        # -------------ROW1-----------------------
+        LTitle2 = ttk.Label(F2, text='Title', font=('None', 18))
+        LTitle2.grid(row=1, column=0, padx=5, pady=5, sticky='w')
+
+        Title2 = StringVar()
+        ETitle2 = ttk.Entry(F2, textvariable=Title2, font=('None', 18))
+        ETitle2.grid(row=1, column=1, padx=5, pady=5, sticky='w')
+
+        # -------------ROW 2---------------------
+        LIncome = ttk.Label(F2, text='Income', font=('None', 18))
+        LIncome.grid(row=2, column=0, padx=5, pady=5, sticky='w')
+
+        Incomes = StringVar()
+        EIncome = ttk.Entry(F2, textvariable=Incomes, font=('None', 18))
+        EIncome.grid(row=2, column=1, padx=5, pady=5, sticky='w')
+
+        # ----------------ROW 3------------------------------
+        BF2Add = ttk.Button(F2, text='ADD', command=Addincomes)
+        BF2Add.grid(row=3, column=1, padx=5, pady=5, sticky='w', ipadx=10, ipady=10)
+
+        # ---------------TREEVIEW---------------------------
+        TVList = ['Date', 'Incomes', 'Amount']
+        TVIncomes = ttk.Treeview(F2, columns=TVList, show='headings', height=5)
+        for i in TVList:
+            TVIncomes.heading(i, text=i.title())
+        TVIncomes.grid(row=4, column=1, padx=5, pady=5, sticky='w', columnspan=3)
+
+        wm.mainloop()
+
+    def todolist(self):
+        def newTask():
+            task = my_entry.get()
+            if task != "":
+                lb.insert(END, task)
+                my_entry.delete(0, "end")
+            else:
+                messagebox.showwarning("warning", "Please enter some task.")
+
+        def deleteTask():
+            lb.delete(ANCHOR)
+
+        ws = Tk()
+        ws.geometry('500x450+500+200')
+        ws.title('PythonGuides')
+        ws.config(bg='#223441')
+        ws.resizable(width=False, height=False)
+
+        frame = Frame(ws)
+        frame.pack(pady=10)
+
+        lb = Listbox(
+            frame,
+            width=25,
+            height=8,
+            font=('Times', 18),
+            bd=0,
+            fg='#464646',
+            highlightthickness=0,
+            selectbackground='#a6a6a6',
+            activestyle="none",
+
+        )
+        lb.pack(side=LEFT, fill=BOTH)
+
+        task_list = [
+            'add some activities',
+
+        ]
+
+        for item in task_list:
+            lb.insert(END, item)
+
+        sb = Scrollbar(frame)
+        sb.pack(side=RIGHT, fill=BOTH)
+
+        lb.config(yscrollcommand=sb.set)
+        sb.config(command=lb.yview)
+
+        my_entry = Entry(
+            ws,
+            font=('times', 24)
+        )
+
+        my_entry.pack(pady=20)
+
+        button_frame = Frame(ws)
+        button_frame.pack(pady=20)
+
+        addTask_btn = Button(
+            button_frame,
+            text='Add Task',
+            font=('times 14'),
+            bg='#c5f776',
+            padx=20,
+            pady=10,
+            command=newTask
+        )
+        addTask_btn.pack(fill=BOTH, expand=True, side=LEFT)
+
+        delTask_btn = Button(
+            button_frame,
+            text='Delete Task',
+            font=('times 14'),
+            bg='#ff8b61',
+            padx=20,
+            pady=10,
+            command=deleteTask
+        )
+        delTask_btn.pack(fill=BOTH, expand=True, side=LEFT)
+
+        ws.mainloop()
+
+    def mynotes(self):
+        class Notepad:
+            __root = Tk()
+            __thisWidth = 300
+            __thisHeight = 300
+            __thisTextArea = Text(__root)
+            __thisMenuBar = Menu(__root)
+            __thisFileMenu = Menu(__thisMenuBar, tearoff=0)
+            __thisEditMenu = Menu(__thisMenuBar, tearoff=0)
+            __thisHelpMenu = Menu(__thisMenuBar, tearoff=0)
+            __thisScrollBar = Scrollbar(__thisTextArea)
+            __file = None
+
+            def __init__(self, **kwargs):
+
+                # Set icon
+                try:
+                    self.__root.wm_iconbitmap("Notepad.ico")
+                except:
+                    pass
+
+                try:
+                    self.__thisWidth = kwargs['width']
+                except KeyError:
+                    pass
+
+                try:
+                    self.__thisHeight = kwargs['height']
+                except KeyError:
+                    pass
+
+                # Set the window text
+                self.__root.title("Untitled - Notepad")
+
+                # Center the window
+                screenWidth = self.__root.winfo_screenwidth()
+                screenHeight = self.__root.winfo_screenheight()
+
+                # For left-align
+                left = (screenWidth / 2) - (self.__thisWidth / 2)
+
+                # For right-align
+                top = (screenHeight / 2) - (self.__thisHeight / 2)
+
+                # For top and bottom
+                self.__root.geometry('%dx%d+%d+%d' % (self.__thisWidth,
+                                                      self.__thisHeight,
+                                                      left, top))
+
+                # To make the textarea auto resizable
+                self.__root.grid_rowconfigure(0, weight=1)
+                self.__root.grid_columnconfigure(0, weight=1)
+
+                # Add controls (widget)
+                self.__thisTextArea.grid(sticky=N + E + S + W)
+
+                # To open new file
+                self.__thisFileMenu.add_command(label="New",
+                                                command=self.__newFile)
+
+                # To open a already existing file
+                self.__thisFileMenu.add_command(label="Open",
+                                                command=self.__openFile)
+
+                # To save current file
+                self.__thisFileMenu.add_command(label="Save",
+                                                command=self.__saveFile)
+
+                # To create a line in the dialog
+                self.__thisFileMenu.add_separator()
+                self.__thisFileMenu.add_command(label="Exit",
+                                                command=self.__quitApplication)
+                self.__thisMenuBar.add_cascade(label="File",
+                                               menu=self.__thisFileMenu)
+
+                # To give a feature of cut
+                self.__thisEditMenu.add_command(label="Cut",
+                                                command=self.__cut)
+
+                # to give a feature of copy
+                self.__thisEditMenu.add_command(label="Copy",
+                                                command=self.__copy)
+
+                # To give a feature of paste
+                self.__thisEditMenu.add_command(label="Paste",
+                                                command=self.__paste)
+
+                # To give a feature of editing
+                self.__thisMenuBar.add_cascade(label="Edit",
+                                               menu=self.__thisEditMenu)
+
+                # To create a feature of description of the notepad
+                self.__thisHelpMenu.add_command(label="About Notepad",
+                                                command=self.__showAbout)
+                self.__thisMenuBar.add_cascade(label="Help",
+                                               menu=self.__thisHelpMenu)
+
+                self.__root.config(menu=self.__thisMenuBar)
+
+                self.__thisScrollBar.pack(side=RIGHT, fill=Y)
+
+                # Scrollbar will adjust automatically according to the content
+                self.__thisScrollBar.config(command=self.__thisTextArea.yview)
+                self.__thisTextArea.config(yscrollcommand=self.__thisScrollBar.set)
+
+            def __quitApplication(self):
+                self.__root.destroy()
+                # exit()
+
+            def __showAbout(self):
+                showinfo("Notepad", "Mrinal Verma")
+
+            def __openFile(self):
+
+                self.__file = askopenfilename(defaultextension=".txt",
+                                              filetypes=[("All Files", "*.*"),
+                                                         ("Text Documents", "*.txt")])
+
+                if self.__file == "":
+
+                    # no file to open
+                    self.__file = None
+                else:
+
+                    # Try to open the file
+                    # set the window title
+                    self.__root.title(os.path.basename(self.__file) + " - Notepad")
+                    self.__thisTextArea.delete(1.0, END)
+
+                    file = open(self.__file, "r")
+
+                    self.__thisTextArea.insert(1.0, file.read())
+
+                    file.close()
+
+            def __newFile(self):
+                self.__root.title("Untitled - Notepad")
+                self.__file = None
+                self.__thisTextArea.delete(1.0, END)
+
+            def __saveFile(self):
+
+                if self.__file == None:
+                    # Save as new file
+                    self.__file = asksaveasfilename(initialfile='Untitled.txt',
+                                                    defaultextension=".txt",
+                                                    filetypes=[("All Files", "*.*"),
+                                                               ("Text Documents", "*.txt")])
+
+                    if self.__file == "":
+                        self.__file = None
+                    else:
+
+                        # Try to save the file
+                        file = open(self.__file, "w")
+                        file.write(self.__thisTextArea.get(1.0, END))
+                        file.close()
+
+                        # Change the window title
+                        self.__root.title(os.path.basename(self.__file) + " - Notepad")
+
+
+                else:
+                    file = open(self.__file, "w")
+                    file.write(self.__thisTextArea.get(1.0, END))
+                    file.close()
+
+            def __cut(self):
+                self.__thisTextArea.event_generate("<<Cut>>")
+
+            def __copy(self):
+                self.__thisTextArea.event_generate("<<Copy>>")
+
+            def __paste(self):
+                self.__thisTextArea.event_generate("<<Paste>>")
+
+            def run(self):
+
+                # Run main application
+                self.__root.mainloop()
+
+        notepad = Notepad(width=600, height=400)
+        notepad.run()
+
+
+root = Tk()
+app = Frames()
+app.mainFrame(root)
+root.mainloop()
